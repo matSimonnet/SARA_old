@@ -3,8 +3,6 @@ package orion.brest.sara;
 import java.util.ArrayList;
 import java.util.Date;
 
-import fr.ms.tex2spichproj.R;
-
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
