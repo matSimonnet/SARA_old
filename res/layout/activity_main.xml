@@ -88,7 +88,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="25" 
-        android:importantForAccessibility="no"
         android:max="100"
         android:progress="5"
         />

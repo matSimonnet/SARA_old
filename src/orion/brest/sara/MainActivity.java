@@ -37,11 +37,9 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private ImageButton buttonReco = null;
 	
 	private CheckBox speedAutoCheckBox = null;
-	@SuppressWarnings("unused")
 	private CheckBox bearingAutoCheckBox = null;
 	
 	private SeekBar speedBar = null;
-	@SuppressWarnings("unused")
 	private SeekBar bearingBar = null;
 	private SeekBar timeBar = null; 
 	
@@ -49,7 +47,15 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	
 	private LocationManager lm = null;
 	private LocationListener ll = null;
+	
 	private String bearing = "pas de satellite";
+	private double bearingAuto = 0;
+	private double bearingLastAuto = 0;
+	private double bearingTreshold = 10; 
+	private long bearingTimeTreshold = 5;
+	private Date bearingNow = null;
+	private Date bearingBefore = null;
+	
 	private String speed = "pas de satellite";
 	private double speedAuto = 0;
 	private double speedLastAuto = 0;
@@ -58,7 +64,6 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private Date speedNow = null;
 	private Date speedBefore = null;
 	
-	//test
 	//positions : 
 	@SuppressWarnings("unused")
 	private String latitude = "pas de satellite";
@@ -90,6 +95,11 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     speedBar.setOnSeekBarChangeListener(this);
     speedBar.setContentDescription("Réglage seuil vitesse auto");
     
+    //SpeedBar
+    bearingBar = (SeekBar) findViewById(R.id.seekBarBearing);
+    bearingBar.setOnSeekBarChangeListener(this);
+    bearingBar.setContentDescription("Réglage seuil cap auto");
+    
     //TimeBar 
     timeBar = (SeekBar) findViewById(R.id.seekBarTime);
     timeBar.setOnSeekBarChangeListener(this);
@@ -109,6 +119,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 //	now = new Date();
 //	Log.i("new Date() : now.getTime", " = " + now.getTime());
 	speedBefore = new Date();
+	bearingBefore = new Date();
 	
 	//2point creation
 	/**
@@ -244,13 +255,29 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			if (speedAutoCheckBox.isChecked()){
 				speedAuto = arrondiSpeed(loc.getSpeed()*(1.94));
 				speedNow = new Date();
-				if 	((( speedAuto < speedLastAuto - speedTreshold )|| ( speedAuto > speedLastAuto + speedTreshold ))
+				if 	((( speedAuto < speedLastAuto - speedTreshold ) || ( speedAuto > speedLastAuto + speedTreshold ))
 				 &&	((speedNow.getTime() - speedBefore.getTime()) > speedTimeTreshold*1000)){
 				tts.speak("vitesse : " + speed + "noeuds", TextToSpeech.QUEUE_FLUSH, null);
 				speedLastAuto = speedAuto;
 				speedBefore = new Date();
 				}
 			}//end of if speedAutoCheck...
+			
+			if (bearingAutoCheckBox.isChecked()){
+				bearingAuto = (int)loc.getBearing();
+				bearingNow = new Date();
+				
+				int bearingDiff = java.lang.Math.abs( (int)bearingLastAuto - (int)bearingAuto );
+				if (bearingDiff > 180) bearingDiff = java.lang.Math.abs(bearingDiff-360);
+				
+				if 	((( bearingDiff > bearingTreshold ))
+				 &&	((bearingNow.getTime() - bearingBefore.getTime()) > bearingTimeTreshold*1000)){
+				tts.speak("cap : " + bearing + "degrés", TextToSpeech.QUEUE_FLUSH, null);
+				bearingLastAuto = bearingAuto;
+				bearingBefore = new Date();
+				}
+			}//end of if speedAutoCheck...
+			
 			
 			//displaying value
 			textViewSpeed.setText(speed);
@@ -279,13 +306,21 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			boolean fromUser) {
 		if (seekBar.equals(speedBar)){
 			speedTreshold = (double) progress/10;
-			textViewAuto.setText("Seuil vitesse auto : " + Double.valueOf(speedTreshold).toString());
+			textViewAuto.setText("Seuil vitesse : " + Double.valueOf(speedTreshold).toString());
 			seekBar.setContentDescription(Double.valueOf(speedTreshold).toString() + "noeuds");
 		}
+		
+		else if (seekBar.equals(bearingBar)){
+			bearingTreshold = progress;
+			textViewAuto.setText("Seuil de cap : " + Double.valueOf(bearingTreshold).toString());
+			textViewAuto.setText("Seuil de cap : " + Integer.toString((int)bearingTreshold));
+			seekBar.setContentDescription(Integer.toString((int)bearingTreshold) + "degrés");
+		}
+		
 		else if (seekBar.equals(timeBar)){
 			speedTimeTreshold = progress;
-			textViewAuto.setText("Seuil de temps : " + Double.valueOf(speedTimeTreshold).toString());
-			seekBar.setContentDescription(Double.valueOf((int)speedTimeTreshold).toString() + "secondes");
+			textViewAuto.setText("Seuil de temps : " + Integer.toString((int)speedTimeTreshold));
+			seekBar.setContentDescription(Integer.toString((int)speedTimeTreshold) + "secondes");
 		}
 		
 	}
