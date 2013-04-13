@@ -58,6 +58,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private Date speedNow = null;
 	private Date speedBefore = null;
 	
+	//test
 	//positions : 
 	@SuppressWarnings("unused")
 	private String latitude = "pas de satellite";
