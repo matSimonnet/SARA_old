@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -51,7 +52,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private String bearing = "pas de satellite";
 	private double bearingAuto = 0;
 	private double bearingLastAuto = 0;
-	private double bearingTreshold = 10; 
+	private double bearingTreshold = 4; 
 	private long bearingTimeTreshold = 5;
 	private Date bearingNow = null;
 	private Date bearingBefore = null;
@@ -59,7 +60,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private String speed = "pas de satellite";
 	private double speedAuto = 0;
 	private double speedLastAuto = 0;
-	private double speedTreshold = 0.1; 
+	private double speedTreshold = 1; 
 	private long speedTimeTreshold = 5;
 	private Date speedNow = null;
 	private Date speedBefore = null;
@@ -74,6 +75,8 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
@@ -88,7 +91,9 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     
     //CheckBox
     speedAutoCheckBox = (CheckBox) findViewById(R.id.speedAutoCheckBox);
+    speedAutoCheckBox.setChecked(true);
     bearingAutoCheckBox = (CheckBox) findViewById(R.id.bearingAutoCheckBox);
+    bearingAutoCheckBox.setChecked(true);
         
     //SpeedBar
     speedBar = (SeekBar) findViewById(R.id.seekBarSpeed);
@@ -144,6 +149,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	
     // tts creation
 	tts = new TextToSpeech(this, onInitListener);
+	tts.setSpeechRate((float) 2.0);
 	
 	// button creation
     buttonSpeed= new Button(this);
