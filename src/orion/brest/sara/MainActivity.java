@@ -1,5 +1,6 @@
 package orion.brest.sara;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,9 +13,12 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -340,5 +344,30 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 		//textView5.setContentDescription("On stop Seuil vitesse auto : " + Double.valueOf(speedTreshold).toString());
 		//tts.speak(" Le Seuil de la vitesse auto est réglé à : " + Double.valueOf(speedTreshold).toString(), TextToSpeech.QUEUE_ADD, null);
 	}
+	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	getMenuInflater().inflate(R.menu.actionbar, menu);
+    	return super.onCreateOptionsMenu(menu);	
+    }
+	
+  //action bar items
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+		final Context context = this; 
+    	switch (item.getItemId()) {
+		//map management
+    	case R.id.item1:
+    		Intent intent = new Intent(context,  SettingsActivity.class); 
+    		startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+    }
+    
+    
+    
+    
  
 }//end of Activity
