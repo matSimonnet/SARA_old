@@ -3,15 +3,15 @@ package orion.brest.sara;
 import java.util.ArrayList;
 import java.util.Date;
 
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -81,34 +81,34 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
         setContentView(R.layout.activity_main);
         
     //TextView creation
-    textViewSpeed = new TextView(this);
-    textViewSpeed = (TextView) findViewById(R.id.speedView);
-    textViewBearing = new TextView(this);
-    textViewBearing = (TextView) findViewById(R.id.bearing);
-    textViewAuto = new TextView(this);
-    textViewAuto = (TextView) findViewById(R.id.speak);
-    textViewAuto.setText("mode auto par défault");
+//    textViewSpeed = new TextView(this);
+//    textViewSpeed = (TextView) findViewById(R.id.speedView);
+//    textViewBearing = new TextView(this);
+//    textViewBearing = (TextView) findViewById(R.id.bearing);
+//    textViewAuto = new TextView(this);
+//    textViewAuto = (TextView) findViewById(R.id.speak);
+//    textViewAuto.setText("mode auto par défault");
     
     //CheckBox
-    speedAutoCheckBox = (CheckBox) findViewById(R.id.speedAutoCheckBox);
-    speedAutoCheckBox.setChecked(true);
-    bearingAutoCheckBox = (CheckBox) findViewById(R.id.bearingAutoCheckBox);
-    bearingAutoCheckBox.setChecked(true);
+//    speedAutoCheckBox = (CheckBox) findViewById(R.id.speedAutoCheckBox);
+//    speedAutoCheckBox.setChecked(true);
+//    bearingAutoCheckBox = (CheckBox) findViewById(R.id.bearingAutoCheckBox);
+//    bearingAutoCheckBox.setChecked(true);
         
     //SpeedBar
-    speedBar = (SeekBar) findViewById(R.id.seekBarSpeed);
-    speedBar.setOnSeekBarChangeListener(this);
-    speedBar.setContentDescription("Réglage seuil vitesse auto");
+//    speedBar = (SeekBar) findViewById(R.id.seekBarSpeed);
+//    speedBar.setOnSeekBarChangeListener(this);
+//    speedBar.setContentDescription("Réglage seuil vitesse auto");
     
     //SpeedBar
-    bearingBar = (SeekBar) findViewById(R.id.seekBarBearing);
-    bearingBar.setOnSeekBarChangeListener(this);
-    bearingBar.setContentDescription("Réglage seuil cap auto");
+//    bearingBar = (SeekBar) findViewById(R.id.seekBarBearing);
+//    bearingBar.setOnSeekBarChangeListener(this);
+//    bearingBar.setContentDescription("Réglage seuil cap auto");
     
     //TimeBar 
-    timeBar = (SeekBar) findViewById(R.id.seekBarTime);
-    timeBar.setOnSeekBarChangeListener(this);
-    timeBar.setContentDescription("Réglage seuil temps vitesse auto");
+//    timeBar = (SeekBar) findViewById(R.id.seekBarTime);
+//    timeBar.setOnSeekBarChangeListener(this);
+//    timeBar.setContentDescription("Réglage seuil temps vitesse auto");
     
     // edit text creation
     //editText = new EditText(this);
@@ -196,6 +196,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     super.onResume();
     lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
     //tts.speak("resume", tts.QUEUE_FLUSH, null);
+    //Log.w("RESUME", "RESUME");
   }
 
   @Override
@@ -256,7 +257,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			speed = String.valueOf(arrondiSpeed(loc.getSpeed()*(1.94)));
 			bearing = String.valueOf((int)loc.getBearing());
 			
-			if (speedAutoCheckBox.isChecked()){
+			//if (speedAutoCheckBox.isChecked()){
 				speedAuto = arrondiSpeed(loc.getSpeed()*(1.94));
 				speedNow = new Date();
 				if 	((( speedAuto < speedLastAuto - speedTreshold ) || ( speedAuto > speedLastAuto + speedTreshold ))
@@ -265,9 +266,9 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 				speedLastAuto = speedAuto;
 				speedBefore = new Date();
 				}
-			}//end of if speedAutoCheck...
+			//}//end of if speedAutoCheck...
 			
-			if (bearingAutoCheckBox.isChecked()){
+			//if (bearingAutoCheckBox.isChecked()){
 				bearingAuto = (int)loc.getBearing();
 				bearingNow = new Date();
 				
@@ -280,12 +281,12 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 				bearingLastAuto = bearingAuto;
 				bearingBefore = new Date();
 				}
-			}//end of if speedAutoCheck...
+			//}//end of if speedAutoCheck...
 			
 			
 			//displaying value
-			textViewSpeed.setText(speed);
-			textViewBearing.setText(bearing);    
+//			textViewSpeed.setText(speed);
+//			textViewBearing.setText(bearing);    
 		}
 
 		@Override
