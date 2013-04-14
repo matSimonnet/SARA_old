@@ -192,18 +192,16 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
     //tts.speak("resume", tts.QUEUE_FLUSH, null);
   }
 
-  /* Remove the locationlistener updates when Activity is paused */
   @Override
   protected void onPause() {
     super.onPause();
-    lm.removeUpdates(ll);
+    //lm.removeUpdates(ll);
   }
   
-  /* Remove the locationlistener updates when Activity is stopped */
   @Override
   protected void onStop() {
     super.onStop();
-	tts.shutdown();
+	//tts.shutdown();
   }
   
 	@Override
