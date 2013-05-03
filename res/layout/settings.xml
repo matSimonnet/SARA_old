@@ -1,30 +1,80 @@
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/linearLayout1"
+			android:layout_width="match_parent" 
+			android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:orientation="vertical" >
 
-			<CheckBox
-				android:id="@+id/speedAutoCheckBox"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="25"
-				android:text="Vitesse auto"
-			/>
-			
-			<CheckBox
-				android:id="@+id/bearingAutoCheckBox"
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"
-				android:layout_weight="25"
-				android:text="cap auto"
-			/>
+            <Button
+			android:id="@+id/upButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/timepicker_up_normal" />
+            
+            <EditText
+			android:id="@+id/numberEditText"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/timepicker_input_selected"
+			android:gravity="center"
+			android:inputType="number"
+						>
+			</EditText>
+            
+            <Button
+			android:id="@+id/downButton"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:background="@drawable/timepicker_down_normal" />
+            
+            
+<!--             <CheckBox -->
+<!--                 android:id="@+id/bearingAutoCheckBox" -->
+<!--                 android:layout_width="fill_parent" -->
+<!--                 android:layout_height="fill_parent" -->
+<!--                 android:layout_weight="25" -->
+<!--                 android:text="cap auto"  -->
+<!--                 android:textSize="80sp" -->
+<!--                 /> -->
 
+<!-- 	        <CheckBox -->
+<!-- 	            android:id="@+id/speedAutoCheckBox" -->
+<!-- 	            android:layout_width="fill_parent" -->
+<!-- 	            android:layout_height="fill_parent" -->
+<!-- 	            android:layout_weight="25" -->
+<!-- 	            android:text="Vitesse auto"  -->
+<!-- 	            android:textSize="80sp" -->
+<!-- 				/> -->
+        
         </LinearLayout>
+        
+        	<LinearLayout
+		android:id="@+id/linearLayout2"
+		android:layout_below="@id/linearLayout1"
+		android:orientation="horizontal"
+		android:layout_width="match_parent" 
+		android:layout_height="wrap_content"
+    >
+	<Button
+		android:id="@+id/speedAutoCheckBox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="25"
+		android:text="Vitesse auto"
+		/>
+		<CheckBox
+			android:id="@+id/bearingAutoCheckBox"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="25"
+			android:text="cap auto"
+		/>
+
+	</LinearLayout>
 
     </RelativeLayout>

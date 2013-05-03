@@ -1,6 +1,5 @@
 package orion.brest.sara;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -13,7 +12,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
@@ -32,7 +30,11 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 
 	// variables declarations
 	
+	public final static String H = "heure";
+	
 	protected static final int RESULT_SPEECH = 1;
+	protected static final int AUTO_TRESHOLD_REQUEST = 10 ;
+	protected static final String AUTO_TRESHOLD_RESULT = "SpeedAutoResult";
 	
 	private TextView textViewSpeed = null;
 	private TextView textViewBearing = null;
@@ -40,9 +42,6 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 	private Button buttonSpeed = null;
 	private Button buttonBearing = null;
 	private ImageButton buttonReco = null;
-	
-	private CheckBox speedAutoCheckBox = null;
-	private CheckBox bearingAutoCheckBox = null;
 	
 	private SeekBar speedBar = null;
 	private SeekBar bearingBar = null;
@@ -93,11 +92,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 //    textViewAuto = (TextView) findViewById(R.id.speak);
 //    textViewAuto.setText("mode auto par défault");
     
-    //CheckBox
-//    speedAutoCheckBox = (CheckBox) findViewById(R.id.speedAutoCheckBox);
-//    speedAutoCheckBox.setChecked(true);
-//    bearingAutoCheckBox = (CheckBox) findViewById(R.id.bearingAutoCheckBox);
-//    bearingAutoCheckBox.setChecked(true);
+
         
     //SpeedBar
 //    speedBar = (SeekBar) findViewById(R.id.seekBarSpeed);
@@ -222,29 +217,6 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 		tts.shutdown();
 	}
 	
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        
-        switch (requestCode) {
-        	case RESULT_SPEECH: {
-        		if (resultCode == RESULT_OK && null != data) {
-                ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                	if ( (text.get(0).equals("vitesse"))){
-                		tts.speak("vitesse : " + speed + "noeuds", TextToSpeech.QUEUE_FLUSH, null);
-                	}
-                	else if ( (text.get(0).equals("cap"))){
-                		tts.speak("cap : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
-                	}
-                	else {
-                		Toast.makeText(getApplicationContext(),text.get(0),Toast.LENGTH_SHORT).show();
-                	}
-        		}
-            break;
-        	}// end of case
-        }//end of switch 
-    }//end of on Activity result 
-	
 	//method to round 1 decimal
 	//public double arrondiLat(double val) {return (Math.floor(val*1000))/1000;}
 	//public double arrondiLong(double val) {return (Math.floor(val*100))/100;}
@@ -261,7 +233,7 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 			speed = String.valueOf(arrondiSpeed(loc.getSpeed()*(1.94)));
 			bearing = String.valueOf((int)loc.getBearing());
 			
-			//if (speedAutoCheckBox.isChecked()){
+//			if (speedAutoCheckBox.isChecked()){
 				speedAuto = arrondiSpeed(loc.getSpeed()*(1.94));
 				speedNow = new Date();
 				if 	((( speedAuto < speedLastAuto - speedTreshold ) || ( speedAuto > speedLastAuto + speedTreshold ))
@@ -359,15 +331,40 @@ public class MainActivity extends Activity implements OnSeekBarChangeListener{
 		//map management
     	case R.id.item1:
     		Intent intent = new Intent(context,  SettingsActivity.class); 
-    		startActivity(intent);
+    		startActivityForResult(intent, AUTO_TRESHOLD_REQUEST);
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
     }
     
-    
-    
-    
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        switch (requestCode) {
+        	case RESULT_SPEECH: {
+        		if (resultCode == RESULT_OK && null != data) {
+                ArrayList<String> text = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                	if ( (text.get(0).equals("vitesse"))){
+                		tts.speak("vitesse : " + speed + "noeuds", TextToSpeech.QUEUE_FLUSH, null);
+                	}
+                	else if ( (text.get(0).equals("cap"))){
+                		tts.speak("cap : " + bearing, TextToSpeech.QUEUE_FLUSH, null);
+                	}
+                	else {
+                		Toast.makeText(getApplicationContext(),text.get(0),Toast.LENGTH_SHORT).show();
+                	}
+        		}
+            break;
+        	}
+            case AUTO_TRESHOLD_REQUEST: {
+            	if (resultCode == RESULT_OK) { 
+            			Toast.makeText(getApplicationContext(), data.getStringExtra(AUTO_TRESHOLD_RESULT) ,Toast.LENGTH_SHORT).show();
+            	}
+            break;
+        	}// end of case
+        }//end of switch 
+    }//end of on Activity result
  
 }//end of Activity
